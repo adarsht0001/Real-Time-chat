@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - '3000:$PORT'
+    env_file: .env
+    environment:
+      PORT: $PORT
+      DB_URL: $DB_URL
+      JWT_SECRET: $JWT_SECRET
+    volumes:
+      - .:/server
