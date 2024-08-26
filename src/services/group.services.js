@@ -34,11 +34,43 @@ const groupServices = {
 
     const newGroup = new models.group({
       name,
-      members:[...members, req.user.id],
+      members: [...members, req.user.id],
       admin: req.user.id,
     });
 
+    await newGroup.save();
+
     return newGroup;
+  },
+
+  async sendGroupMessage(req, res) {
+    const groupId = req.params.id;
+    const { senderId, content } = req.body;
+
+    if (!senderId) {
+      throw new AppError('sender Id is required', statusCode.BAD_REQUEST);
+    }
+
+    if (senderId !== req.user.id) {
+      throw new AppError('sender Id is not valid', statusCode.BAD_REQUEST);
+    }
+
+    if (!content) {
+      throw new AppError('content is required', statusCode.BAD_REQUEST);
+    }
+
+    const group = await models.group.findById(groupId);
+    if (!group) {
+      throw new AppError('Invalid group Id', statusCode.BAD_REQUEST);
+    }
+
+    const message = new models.message({
+      senderId,
+      groupId,
+      content,
+    });
+    message.save();
+    return message;
   },
 };
 

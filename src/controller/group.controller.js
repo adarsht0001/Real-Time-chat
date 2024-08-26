@@ -11,6 +11,15 @@ const groupController = {
       next(error);
     }
   },
+
+  async sendGroupMessage(req, res, next) {
+    try {
+      const data = await services.group.sendGroupMessage(req, res);
+      return response.sendSuccessResponse(req, res, data, statusCode.CREATED);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default groupController;
