@@ -34,6 +34,43 @@ const messageServices = {
     message.save();
     return message;
   },
+
+  async messageHistory(req, res) {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.pageSize) || 10;
+    const groupId = req.query.groupId;
+    const skip = (page - 1) * limit;
+
+    const { userId } = req.query;
+    const withUserId = req.query.withUserId;
+
+    if (!userId) {
+      throw new AppError('userId is required', statusCode.BAD_REQUEST);
+    }
+
+    const query = { senderId: userId };
+    if (groupId) {
+      query.groupId = groupId;
+    }
+    if (withUserId) {
+      query.$or = [
+        { senderId: userId, receiverId: withUserId },
+        { senderId: withUserId, receiverId: userId },
+      ];
+    }
+    const totalMatchedMessage = await models.message.countDocuments(query);
+    const totalPages = Math.ceil(totalMatchedMessage / limit);
+
+    const messages = await models.message.find(query).skip(skip).limit(limit);
+    return {
+      messages,
+      totalPages,
+      currenntPage: page,
+      totalMessages:totalMatchedMessage,
+      limit,
+      hasNext: page < totalPages,
+    };
+  },
 };
 
 export default messageServices;

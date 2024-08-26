@@ -11,6 +11,15 @@ const messageController = {
       next(error);
     }
   },
+
+  async getMessageHistory(req, res,next) {
+    try {
+      const data = await services.message.messageHistory(req, res);
+      return response.sendSuccessResponse(req, res, data, statusCode.CREATED);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default messageController;

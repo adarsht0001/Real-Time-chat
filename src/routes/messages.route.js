@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.post('/', jwtVerify, controller.message.createMessage);
 
+router.get('/history', jwtVerify, controller.message.getMessageHistory);
+
 export default router;
