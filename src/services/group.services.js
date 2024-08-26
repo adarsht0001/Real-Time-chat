@@ -27,7 +27,7 @@ const groupServices = {
       if (!member) {
         throw new AppError(
           `Got an invalid member ${members[i]}`,
-          statusCode.BAD_REQUEST
+          statusCode.NOT_FOUND
         );
       }
     }
@@ -61,7 +61,7 @@ const groupServices = {
 
     const group = await models.group.findById(groupId);
     if (!group) {
-      throw new AppError('Invalid group Id', statusCode.BAD_REQUEST);
+      throw new AppError('Invalid group Id', statusCode.NOT_FOUND);
     }
 
     const message = new models.message({

@@ -13,7 +13,6 @@ const socketServer = (io) => {
     });
 
     //group message
-
     socket.on('group-message', ({ senderId, message }) => {
       const sender = getUser(senderId);
       if (sender.room) {

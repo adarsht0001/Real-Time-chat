@@ -23,7 +23,7 @@ const authServices = {
     const existingUser = await models.user.findOne({ email }).lean();
 
     if (existingUser) {
-      throw new AppError('user email already exists', statusCode.UNAUTHORIZED);
+      throw new AppError('user email already exists', statusCode.NOT_FOUND);
     }
 
     const hashedPassword = await hashPassword(password);
@@ -43,8 +43,8 @@ const authServices = {
     const user = await models.user.findOne({ email });
     if (!user) {
       throw new AppError(
-        `The email address ${email} is not associated with any account. please check and try again!`,
-        statusCode.UNAUTHORIZED
+        'The email not found',
+        statusCode.NOT_FOUND
       );
     }
 

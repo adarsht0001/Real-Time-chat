@@ -11,6 +11,8 @@ import { Server } from 'socket.io';
 import socketConfig from './config/socket.config.js';
 import socketServer from './websocket.js';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json' with { type: "json" };;
 
 dbConnect();
 const app = express();
@@ -24,6 +26,7 @@ const io = new Server(server, socketConfig);
 socketServer(io);
 
 app.use('/api', routes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.all('*', (_req, _res, next) => {
   next(new AppError('not found', statusCode.NOT_FOUND));
