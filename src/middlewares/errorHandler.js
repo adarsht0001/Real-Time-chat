@@ -2,7 +2,7 @@ import logger from '../utils/logger.js';
 import response from '../utils/response.js';
 
 const errorHandlingMiddleware = (err, req, res, next) => {
-  logger.error(err);
+  logger.error(err.message);
   const status = err.statusCode || 400;
 
   if (typeof err === typeof '') {

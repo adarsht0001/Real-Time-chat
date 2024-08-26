@@ -1,12 +1,14 @@
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { hash, verify } from 'argon2';
 
-export const hashPassword = (password) => {
-  return bcrypt.hashSync(password, 10);
+export const hashPassword = async (password) => {
+  const hashedPassword = await hash(password);
+  return hashedPassword;
 };
 
-export const comparePassword = (password, hashedPassword) => {
-  return bcrypt.compareSync(password, hashedPassword);
+export const comparePassword = async (password, hashedPassword) => {
+  const verified = await verify(hashedPassword, password);
+  return verified;
 };
 
 export const createAccessToken = (userId, email) => {

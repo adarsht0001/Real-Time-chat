@@ -10,14 +10,31 @@ import statusCode from '../utils/statuscode.js';
 const authServices = {
   async createUser(req, res) {
     const { email, name, password } = req.body;
+    if (!email) {
+      throw new AppError('Email is required', statusCode.BAD_REQUEST);
+    }
+    if (!name) {
+      throw new AppError('Name is required', statusCode.BAD_REQUEST);
+    }
+    if (!password) {
+      throw new AppError('password is required', statusCode.BAD_REQUEST);
+    }
+
     const existingUser = await models.user.findOne({ email }).lean();
+
     if (existingUser) {
       throw new AppError('user email already exists', statusCode.UNAUTHORIZED);
     }
-    const hashedPassword = hashPassword(password);
+
+    const hashedPassword = await hashPassword(password);
+
     const user = new models.user({ email, name, password: hashedPassword });
     user.save();
-    return user;
+    return {
+      name: user.name,
+      email: user.email,
+      _id: user._id,
+    };
   },
 
   async loginUser(req, res) {
