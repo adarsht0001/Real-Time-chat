@@ -1,0 +1,662 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Real-Time Chat Application API",
+    "description": "API documentation for the real-time chat application.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "michael scott"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "michael@dundermifflin.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "michael scott"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "michael@dundermifflin.com"
+                        },
+                        "_id": {
+                          "type": "string",
+                          "example": "66ccef9467edfd76d8ec0d76"
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message describing what went wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 401
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user email already exists"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Authenticate a user and return a JWT token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "dwight@dundermifflin.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "dwight schrute"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "dwight@dundermifflin.com"
+                        },
+                        "token": {
+                          "type": "string",
+                          "example": "accessToken"
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 401
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Wrong Password!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "The email not found"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages": {
+      "post": {
+        "summary": "Send a new message",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "senderId": {
+                    "type": "string",
+                    "example": "michael"
+                  },
+                  "receiverId": {
+                    "type": "string",
+                    "example": "dwight"
+                  },
+                  "groupId": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Dont Be an Idiot"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Message sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "_id": "message1213",
+                        "senderId": "michael",
+                        "receiverId": "dwight",
+                        "groupId": "",
+                        "content": "Dont Be an Idiot"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message describing what went wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "content is required"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/history": {
+      "get": {
+        "summary": "Retrieve message history",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "phyllis"
+            },
+            "description": "The ID of the user whose message history is being retrieved"
+          },
+          {
+            "in": "query",
+            "name": "withUserId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "angela"
+            },
+            "description": "The ID of the other user for direct messages"
+          },
+          {
+            "in": "query",
+            "name": "groupId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "party-planning-commitee"
+            },
+            "description": "The ID of the group for group messages"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "The page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            },
+            "description": "The number of messages per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message history retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "totalPages": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "currenntPage": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "totalMessages": {
+                          "type": "integer",
+                          "example": 200
+                        },
+                        "hasNext": {
+                          "type": "Boolean",
+                          "example": true
+                        },
+                        "messages": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "senderId": {
+                                "type": "string",
+                                "example": "angela"
+                              },
+                              "receiverId": {
+                                "type": "string",
+                                "example": "phyllis"
+                              },
+                              "groupId": {
+                                "type": "string",
+                                "example": "party-planning-commitee"
+                              },
+                              "content": {
+                                "type": "string",
+                                "example": "Philis, these are spoons. Spoons have rounded tops and are used to scoop things. We need forks, forks have little prongs or Spears on them and we need knives, knives have blades. Do you understand me now"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message describing what went wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "userId is required"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups": {
+      "post": {
+        "summary": "Create a new group chat",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Michael Scott Paper Company"
+                  },
+                  "members": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "ryan",
+                      "pam"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Group created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "name": {
+                          "type": "string",
+                          "example": "Michael Scott Paper Company"
+                        },
+                        "memebers": {
+                          "example": [
+                            "ryan",
+                            "pam"
+                          ]
+                        },
+                        "admin": {
+                          "type": "string",
+                          "example": "michael scott"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "created time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message describing what went wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Name is required"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups/{groupId}/messages": {
+      "post": {
+        "summary": "Send a message to a group",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "groupId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Dundermifflin"
+            },
+            "description": "The ID of the group to which the message is being sent"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "senderId": {
+                    "type": "string",
+                    "example": "jim"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "I am a black belt in gift wrapping."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Group message sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "_id": "message12134",
+                        "senderId": "jim",
+                        "receiverId": "",
+                        "groupId": "Dundermifflin",
+                        "content": "I am a black belt in gift wrapping."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message describing what went wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "http",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "content is required"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": [
+        "read"
+      ]
+    }
+  ]
+}

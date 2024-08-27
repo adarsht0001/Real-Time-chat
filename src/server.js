@@ -12,7 +12,7 @@ import socketConfig from './config/socket.config.js';
 import socketServer from './websocket.js';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './swagger.json' with { type: "json" };;
+import swaggerDocument from './docs/swagger.json' with { type: "json" };;
 
 dbConnect();
 const app = express();
