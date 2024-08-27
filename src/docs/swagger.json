@@ -9,6 +9,10 @@
     {
       "url": "http://localhost:3000/api",
       "description": "Local server"
+    },
+    {
+      "url": "https://real-time-chat-qjjv.onrender.com/api",
+      "description": "Deployed server"
     }
   ],
   "paths": {
