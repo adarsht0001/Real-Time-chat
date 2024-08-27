@@ -17,3 +17,9 @@ export const createAccessToken = (userId, email) => {
   });
   return token;
 };
+
+
+export const verifyToken = (token) => {
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  return decoded;
+};

@@ -12,13 +12,15 @@ import socketConfig from './config/socket.config.js';
 import socketServer from './websocket.js';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './docs/swagger.json' with { type: "json" };;
+import morgan from 'morgan';
+import swaggerDocument from './docs/swagger.json' with { type: 'json' };
 
 dbConnect();
 const app = express();
 const port = process.env.PORT;
 app.use(express.json());
 app.use(cors());
+app.use(morgan('dev'));
 
 const server = http.createServer(app);
 
